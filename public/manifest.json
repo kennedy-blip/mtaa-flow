@@ -1,0 +1,20 @@
+{
+  "name": "MtaaFlow — Merchant & Credit Ledger OS",
+  "short_name": "MtaaFlow",
+  "description": "Offline-first Customer Credit Ledger (DeniTracker), Smart Inventory & Daily Cash Recon for local merchants.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0d12",
+  "theme_color": "#0d0d12",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="mtaaGrad" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#14B8A6" />
+      <stop offset="100%" stop-color="#0EA5E9" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#0D0D12" />
+  <rect x="4.75" y="4.75" width="54.5" height="54.5" rx="15.25" stroke="url(#mtaaGrad)" stroke-opacity="0.65" stroke-width="1.5" />
+  <path d="M16 42V23.5C16 22.1193 17.1193 21 18.5 21H20.8C21.789 21 22.6852 21.5829 23.0858 22.4872L28.7142 35.1927C29.4547 36.8641 31.8253 36.8641 32.5658 35.1927L38.1942 22.4872C38.5948 21.5829 39.491 21 40.48 21H42.78C44.1607 21 45.28 22.1193 45.28 23.5V42" stroke="url(#mtaaGrad)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="48" cy="18" r="4" fill="#34D399" />
+</svg>

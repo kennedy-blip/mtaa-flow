@@ -1,0 +1,23 @@
+{
+  "appId": "ke.co.mtaaflow.ledger",
+  "appName": "MtaaFlow",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#0d0d12"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#0d0d12",
+      "showSpinner": false
+    }
+  }
+}
