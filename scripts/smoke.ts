@@ -75,12 +75,10 @@ async function main() {
   };
 
   console.log('DASH_NET_PROFIT', /Net Estimated Profit/.test(readText()));
-  console.log('TEXT_DASH', readText().slice(0, 220));
 
   await clickByText('Credit Ledger');
   const ledgerText = readText();
   console.log('LEDGER_OK', ledgerText.includes('DeniTracker'), ledgerText.includes('Repay'));
-  console.log('LEDGER_TEXT', ledgerText.slice(0, 700));
 
   await clickByText('Inventory');
   const invText = readText();
@@ -89,12 +87,57 @@ async function main() {
   await clickByText('Settings');
   const setText = readText();
   console.log('SETTINGS_OK', setText.includes('Settings, Privileges'), setText.includes('Download Android APK'));
-  console.log('SETTINGS_TEXT', setText.slice(0, 500));
 
   await clickByText('Daily Recon');
   await clickByText('Record Sale');
-  const saleText = readText();
-  console.log('QUICKSALE_OK', saleText.includes('Cash') && (saleText.includes('M-Pesa') || saleText.includes('Checkout') || saleText.includes('Cart')));
+  console.log('QUICKSALE_OK', readText().includes('Quick POS & Credit Checkout'));
+
+  // End-to-end: add a catalogue product to the basket, then complete a cash sale
+  const productName = 'Mwea Pishori Rice Grade 1 (1kg)';
+  await clickByText(productName);
+  console.log('CART_HAS_ITEM', readText().includes('Itemized Basket (1 units)'));
+
+  const saleButton = Array.from(dom.window.document.querySelectorAll('button')).find((b) =>
+    (b.textContent || '').includes('Complete Cash Sale')
+  );
+  if (!saleButton) throw new Error('Cash checkout button missing');
+  saleButton.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  await new Promise((r) => setTimeout(r, 1200));
+
+  const doneText = readText();
+  console.log('SALE_RECORDED', doneText.includes('Transaction Recorded'));
+  const receiptMatch = doneText.match(/Transaction Recorded • (MF-\d+)/);
+  const newReceiptNo = receiptMatch ? receiptMatch[1] : '';
+  console.log('RECEIPT_NUMBER_ISSUED', Boolean(newReceiptNo), newReceiptNo);
+
+  await clickByText('Done');
+  console.log('RECEIPT_IN_CASHFLOW_FEED', readText().includes(newReceiptNo), newReceiptNo);
+
+  // Repayment modal from the ledger
+  await clickByText('Credit Ledger');
+  await clickByText('Repay');
+  console.log('REPAY_MODAL_OK', readText().includes('Record Debt Repayment'));
+  await clickByText('Cancel');
+
+  // Theme engine persists to <html data-theme>
+  await clickByText('Amber', 0);
+  console.log(
+    'THEME_AMBER_APPLIED',
+    dom.window.document.documentElement.getAttribute('data-theme') === 'amber',
+    dom.window.document.documentElement.getAttribute('data-theme')
+  );
+
+  // Attendant privilege shield hides net profit
+  await clickByText('Staff', 0);
+  await clickByText('Daily Recon');
+  const staffText = readText();
+  console.log(
+    'STAFF_PROFIT_SHIELD',
+    staffText.includes('Owner Privilege Required') && !staffText.includes('Net Margin')
+  );
+  await clickByText('Owner', 0);
+  const ownerText = readText();
+  console.log('OWNER_PROFIT_RESTORED', ownerText.includes('Net Margin'));
   console.log('ERRORS', errors.length);
   for (const e of errors.slice(0, 8)) console.log('ERR:', e.slice(0, 400));
   process.exit(errors.length > 0 ? 1 : 0);
