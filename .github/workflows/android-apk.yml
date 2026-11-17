@@ -44,14 +44,14 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Sync Capacitor Android project
         run: npx cap sync android
 
       - name: Assemble debug APK
         working-directory: android
+        env:
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+          ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
