@@ -1,0 +1,463 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   MtaaFlow — 3-Mode Glassmorphism & Sunlight-Readable Theme Engine
+   Modes:
+     1. savannah  -> Savannah Glass (Light frosted milk glass + emerald accents)
+     2. midnight  -> Midnight Nairobi (Deep #0d0d12 obsidian + neon teal acrylic)
+     3. amber     -> Terminal Amber (High-contrast outdoor market ledger)
+   ============================================================================ */
+
+:root,
+[data-theme='savannah'] {
+  --bg-canvas: #eef4f1;
+  --bg-surface: rgba(255, 255, 255, 0.80);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.92);
+  --bg-surface-subtle: rgba(15, 23, 42, 0.04);
+  --bg-surface-hover: rgba(16, 185, 129, 0.06);
+  --bg-input: rgba(255, 255, 255, 0.88);
+  --bg-modal-backdrop: rgba(15, 23, 42, 0.42);
+
+  --border-glass: rgba(15, 23, 42, 0.10);
+  --border-strong: rgba(15, 23, 42, 0.18);
+  --border-glow-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(16, 185, 129, 0.35) 50%,
+    rgba(14, 165, 233, 0.25) 100%
+  );
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --accent-primary: #059669;
+  --accent-primary-bright: #10b981;
+  --accent-on-primary: #ffffff;
+  --accent-soft: rgba(16, 185, 129, 0.13);
+  --accent-border: rgba(5, 150, 105, 0.32);
+
+  --profit-text: #047857;
+  --profit-bg: rgba(16, 185, 129, 0.14);
+  --profit-border: rgba(5, 150, 105, 0.30);
+
+  --warn-text: #b45309;
+  --warn-bg: rgba(245, 158, 11, 0.15);
+  --warn-border: rgba(217, 119, 6, 0.34);
+
+  --danger-text: #be123c;
+  --danger-bg: rgba(244, 63, 94, 0.13);
+  --danger-border: rgba(225, 29, 72, 0.30);
+
+  --info-text: #0369a1;
+  --info-bg: rgba(14, 165, 233, 0.13);
+  --info-border: rgba(2, 132, 199, 0.28);
+
+  --shadow-glass:
+    0 12px 36px -8px rgba(15, 23, 42, 0.08),
+    0 2px 6px -1px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.92);
+  --shadow-elevated:
+    0 24px 54px -12px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+
+  --mesh-orb-1: rgba(16, 185, 129, 0.22);
+  --mesh-orb-2: rgba(14, 165, 233, 0.16);
+  --mesh-orb-3: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme='midnight'] {
+  --bg-canvas: #0d0d12;
+  --bg-surface: rgba(22, 24, 34, 0.68);
+  --bg-surface-elevated: rgba(28, 31, 44, 0.86);
+  --bg-surface-subtle: rgba(255, 255, 255, 0.045);
+  --bg-surface-hover: rgba(45, 212, 191, 0.08);
+  --bg-input: rgba(13, 14, 21, 0.72);
+  --bg-modal-backdrop: rgba(5, 6, 10, 0.76);
+
+  --border-glass: rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.26);
+  --border-glow-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.30) 0%,
+    rgba(45, 212, 191, 0.45) 50%,
+    rgba(99, 102, 241, 0.28) 100%
+  );
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --accent-primary: #14b8a6;
+  --accent-primary-bright: #2dd4bf;
+  --accent-on-primary: #042f2e;
+  --accent-soft: rgba(20, 184, 166, 0.16);
+  --accent-border: rgba(45, 212, 191, 0.38);
+
+  --profit-text: #34d399;
+  --profit-bg: rgba(16, 185, 129, 0.15);
+  --profit-border: rgba(52, 211, 153, 0.34);
+
+  --warn-text: #fbbf24;
+  --warn-bg: rgba(245, 158, 11, 0.16);
+  --warn-border: rgba(251, 191, 36, 0.36);
+
+  --danger-text: #fb7185;
+  --danger-bg: rgba(244, 63, 94, 0.16);
+  --danger-border: rgba(251, 113, 133, 0.36);
+
+  --info-text: #38bdf8;
+  --info-bg: rgba(14, 165, 233, 0.15);
+  --info-border: rgba(56, 189, 248, 0.34);
+
+  --shadow-glass:
+    0 18px 44px -10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+  --shadow-elevated:
+    0 28px 64px -12px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.20);
+
+  --mesh-orb-1: rgba(20, 184, 166, 0.22);
+  --mesh-orb-2: rgba(79, 70, 229, 0.18);
+  --mesh-orb-3: rgba(6, 182, 212, 0.14);
+}
+
+[data-theme='amber'] {
+  --bg-canvas: #070500;
+  --bg-surface: rgba(20, 14, 2, 0.94);
+  --bg-surface-elevated: rgba(28, 19, 3, 0.98);
+  --bg-surface-subtle: rgba(255, 183, 3, 0.08);
+  --bg-surface-hover: rgba(255, 183, 3, 0.14);
+  --bg-input: rgba(10, 7, 0, 0.96);
+  --bg-modal-backdrop: rgba(0, 0, 0, 0.85);
+
+  --border-glass: rgba(255, 183, 3, 0.48);
+  --border-strong: rgba(255, 196, 38, 0.80);
+  --border-glow-gradient: linear-gradient(
+    135deg,
+    rgba(255, 214, 10, 0.85) 0%,
+    rgba(245, 158, 11, 0.65) 50%,
+    rgba(251, 146, 60, 0.75) 100%
+  );
+
+  --text-primary: #fffbeb;
+  --text-secondary: #fde68a;
+  --text-muted: #f59e0b;
+
+  --accent-primary: #ffb703;
+  --accent-primary-bright: #ffd166;
+  --accent-on-primary: #090600;
+  --accent-soft: rgba(255, 183, 3, 0.18);
+  --accent-border: rgba(255, 183, 3, 0.68);
+
+  --profit-text: #4ade80;
+  --profit-bg: rgba(74, 222, 128, 0.16);
+  --profit-border: rgba(74, 222, 128, 0.58);
+
+  --warn-text: #fde047;
+  --warn-bg: rgba(250, 204, 21, 0.18);
+  --warn-border: rgba(250, 204, 21, 0.65);
+
+  --danger-text: #ff6b6b;
+  --danger-bg: rgba(255, 107, 107, 0.18);
+  --danger-border: rgba(255, 107, 107, 0.65);
+
+  --info-text: #ffd166;
+  --info-bg: rgba(255, 209, 102, 0.15);
+  --info-border: rgba(255, 209, 102, 0.55);
+
+  --shadow-glass:
+    0 12px 32px -6px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 183, 3, 0.22);
+  --shadow-elevated:
+    0 20px 48px -8px rgba(0, 0, 0, 0.92),
+    0 0 18px -4px rgba(255, 183, 3, 0.28);
+
+  --mesh-orb-1: rgba(255, 183, 3, 0.14);
+  --mesh-orb-2: rgba(234, 88, 12, 0.10);
+  --mesh-orb-3: rgba(250, 204, 21, 0.09);
+}
+
+/* Base Canvas & Typography */
+html,
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  transition: background-color 260ms ease, color 220ms ease;
+  overflow-x: hidden;
+}
+
+[data-theme='amber'] .tabular-ledger {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: -0.01em;
+}
+
+/* Animated Mesh Gradient Backdrop */
+@keyframes mtaaMeshFloatA {
+  0% {
+    transform: translate3d(-4%, -3%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(5%, 4%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-2%, 6%, 0) scale(0.95);
+  }
+}
+
+@keyframes mtaaMeshFloatB {
+  0% {
+    transform: translate3d(4%, 2%, 0) scale(1.04);
+  }
+  50% {
+    transform: translate3d(-6%, -4%, 0) scale(0.94);
+  }
+  100% {
+    transform: translate3d(3%, -5%, 0) scale(1.06);
+  }
+}
+
+@keyframes mtaaMeshFloatC {
+  0% {
+    transform: translate3d(0%, 4%, 0) scale(0.96);
+  }
+  50% {
+    transform: translate3d(4%, -5%, 0) scale(1.07);
+  }
+  100% {
+    transform: translate3d(-5%, 2%, 0) scale(1.01);
+  }
+}
+
+.mtaa-mesh-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+}
+
+.mtaa-mesh-orb-1 {
+  position: absolute;
+  top: -15%;
+  left: -10%;
+  width: 56vw;
+  height: 56vw;
+  min-width: 360px;
+  min-height: 360px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, var(--mesh-orb-1) 0%, transparent 70%);
+  filter: blur(54px);
+  animation: mtaaMeshFloatA 22s ease-in-out infinite alternate;
+}
+
+.mtaa-mesh-orb-2 {
+  position: absolute;
+  top: 18%;
+  right: -14%;
+  width: 52vw;
+  height: 52vw;
+  min-width: 340px;
+  min-height: 340px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, var(--mesh-orb-2) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: mtaaMeshFloatB 27s ease-in-out infinite alternate;
+}
+
+.mtaa-mesh-orb-3 {
+  position: absolute;
+  bottom: -18%;
+  left: 20%;
+  width: 50vw;
+  height: 50vw;
+  min-width: 320px;
+  min-height: 320px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, var(--mesh-orb-3) 0%, transparent 70%);
+  filter: blur(58px);
+  animation: mtaaMeshFloatC 24s ease-in-out infinite alternate;
+}
+
+/* Terminal Amber Outdoor High-Contrast Ledger Grid Overlay */
+[data-theme='amber'] .mtaa-mesh-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 183, 3, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 183, 3, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Frosted Acrylic & Glowing 1px Gradient Border Utilities */
+@layer components {
+  .mtaa-glass {
+    background: var(--bg-surface);
+    backdrop-filter: blur(24px) saturate(165%);
+    -webkit-backdrop-filter: blur(24px) saturate(165%);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .mtaa-glass-elevated {
+    background: var(--bg-surface-elevated);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .mtaa-glow-card {
+    position: relative;
+    background: var(--bg-surface);
+    backdrop-filter: blur(24px) saturate(165%);
+    -webkit-backdrop-filter: blur(24px) saturate(165%);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--shadow-glass);
+    transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .mtaa-glow-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--border-glow-gradient);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.62;
+  }
+
+  .mtaa-surface-subtle {
+    background: var(--bg-surface-subtle);
+    border: 1px solid var(--border-glass);
+  }
+
+  .mtaa-input {
+    width: 100%;
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+    border-radius: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .mtaa-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+
+  .mtaa-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .mtaa-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--accent-primary);
+    color: var(--accent-on-primary);
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--accent-border);
+    box-shadow: 0 6px 20px -4px var(--accent-soft);
+    transition: filter 150ms ease, transform 120ms ease;
+  }
+
+  .mtaa-btn-primary:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  .mtaa-btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .mtaa-btn-primary:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+
+  .mtaa-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--bg-surface-subtle);
+    color: var(--text-primary);
+    font-weight: 500;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border-glass);
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .mtaa-btn-secondary:hover:not(:disabled) {
+    background: var(--bg-surface-hover);
+    border-color: var(--accent-border);
+  }
+
+  .mtaa-badge-profit {
+    background: var(--profit-bg);
+    color: var(--profit-text);
+    border: 1px solid var(--profit-border);
+  }
+
+  .mtaa-badge-warn {
+    background: var(--warn-bg);
+    color: var(--warn-text);
+    border: 1px solid var(--warn-border);
+  }
+
+  .mtaa-badge-danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+  }
+
+  .mtaa-badge-info {
+    background: var(--info-bg);
+    color: var(--info-text);
+    border: 1px solid var(--info-border);
+  }
+
+  .mtaa-badge-accent {
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-border);
+  }
+}
+
+/* Custom sleek scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+
+/* Safe area padding for Android APK / Mobile WebView */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
