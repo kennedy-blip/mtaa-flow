@@ -26,3 +26,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+
+# Local verification harness output
+scripts/dist-smoke/
+scripts/dist-db-test.mjs

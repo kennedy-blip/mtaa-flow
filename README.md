@@ -79,6 +79,8 @@ npm run dev        # http://localhost:5173
 npm run build      # type-check + production bundle
 npm run preview    # serve dist on http://localhost:4173
 npm run cap:sync   # build web assets and sync into android/
+npm run test:db    # headless IndexedDB ledger test suite (fake-indexeddb)
+npm run test:ui    # jsdom render + navigation smoke test of all four screens
 ```
 
 ## Android APK
@@ -89,10 +91,15 @@ cd android && ./gradlew assembleDebug
 # → android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-CI builds the universal APK through `.github/workflows/android-apk.yml` and uploads the
-`mtaaflow-apk` artifact. Place the produced binary at
-`public/apk/mtaaflow-v1.2.0-universal.apk` so the in-app **Download Android APK** button and
-`vercel.json` MIME headers serve it directly.
+CI (`.github/workflows/android-apk.yml`) assembles the **debug/universal** APK on every pull
+request and publishes the compiled binary back into this branch at
+`public/apk/mtaaflow-v1.2.0-universal.apk`, which is what the in-app **Download Android APK**
+button and `vercel.json` MIME headers serve. The APK Center verifies the served binary live:
+it fetches the package, shows its real size, and computes the SHA-256 digest in the browser
+(`crypto.subtle`) so owners can confirm the download is intact.
+
+For Play Store distribution, replace the debug keystore with your release keystore and run
+`./gradlew bundleRelease` inside `android/`.
 
 ---
 

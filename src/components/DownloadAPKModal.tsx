@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Smartphone,
@@ -20,7 +20,7 @@ export const APK_BINARY_URL = '/apk/mtaaflow-v1.2.0-universal.apk';
 export const APK_FILENAME = 'MtaaFlow-v1.2.0-Android.apk';
 export const APK_PACKAGE_ID = 'ke.co.mtaaflow.ledger';
 export const APK_VERSION = 'v1.2.0 (Capacitor 6 • Build 12)';
-export const APK_SHA256 = '9f84c2e7b1a604d53c88e12f790a3b5d64e19c08';
+export const APK_BUILD_TAG = 'debug-universal';
 
 interface DownloadAPKModalProps {
   isOpen: boolean;
@@ -41,10 +41,50 @@ export const DownloadAPKModal: React.FC<DownloadAPKModalProps> = ({
 }) => {
   const [downloadStarted, setDownloadStarted] = useState(false);
   const [copiedHash, setCopiedHash] = useState(false);
+  const [packageMeta, setPackageMeta] = useState<{
+    state: 'loading' | 'ready' | 'error';
+    sha256?: string;
+    sizeMb?: string;
+  }>({ state: 'loading' });
+
+  useEffect(() => {
+    if (!isOpen) return;
+    let cancelled = false;
+
+    async function inspectPackage() {
+      setPackageMeta({ state: 'loading' });
+      try {
+        const response = await fetch(APK_BINARY_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error('missing');
+        const buffer = await response.arrayBuffer();
+
+        const sizeMb = `${(buffer.byteLength / (1024 * 1024)).toFixed(1)} MB`;
+        if (!crypto?.subtle) {
+          if (!cancelled) setPackageMeta({ state: 'ready', sizeMb });
+          return;
+        }
+
+        const digest = await crypto.subtle.digest('SHA-256', buffer);
+        const hex = Array.from(new Uint8Array(digest))
+          .map((byte) => byte.toString(16).padStart(2, '0'))
+          .join('');
+
+        if (!cancelled) setPackageMeta({ state: 'ready', sha256: hex, sizeMb });
+      } catch {
+        if (!cancelled) setPackageMeta({ state: 'error' });
+      }
+    }
+
+    inspectPackage();
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
 
   const handleCopySha = async () => {
+    if (!packageMeta.sha256) return;
     try {
-      await navigator.clipboard.writeText(APK_SHA256);
+      await navigator.clipboard.writeText(packageMeta.sha256);
       setCopiedHash(true);
       setTimeout(() => setCopiedHash(false), 2000);
     } catch {
@@ -130,7 +170,9 @@ export const DownloadAPKModal: React.FC<DownloadAPKModalProps> = ({
                 <div className="flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--text-muted)' }}>
                   <ShieldCheck className="w-3.5 h-3.5" /> Target OS
                 </div>
-                <div className="text-xs font-bold mt-1">Android 8.0+ (Universal)</div>
+                <div className="text-xs font-bold mt-1">
+                  Android 8.0+{packageMeta.sizeMb ? ` • ${packageMeta.sizeMb}` : ''}
+                </div>
               </div>
             </div>
 
@@ -142,14 +184,34 @@ export const DownloadAPKModal: React.FC<DownloadAPKModalProps> = ({
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span style={{ color: 'var(--text-muted)' }}>SHA-256 Digest:</span>
-                <button
-                  type="button"
-                  onClick={handleCopySha}
-                  className="inline-flex items-center gap-1 font-mono text-[11px] px-2 py-0.5 rounded-md mtaa-surface-subtle"
-                >
-                  <span>{APK_SHA256.slice(0, 16)}…</span>
-                  {copiedHash ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                </button>
+                {packageMeta.state === 'loading' && (
+                  <span className="font-mono text-[11px]" style={{ color: 'var(--text-muted)' }}>
+                    verifying binary…
+                  </span>
+                )}
+                {packageMeta.state === 'error' && (
+                  <span className="font-mono text-[11px]" style={{ color: 'var(--warn-text)' }}>
+                    binary not deployed on this host
+                  </span>
+                )}
+                {packageMeta.state === 'ready' && packageMeta.sha256 && (
+                  <button
+                    type="button"
+                    onClick={handleCopySha}
+                    className="inline-flex items-center gap-1 font-mono text-[11px] px-2 py-0.5 rounded-md mtaa-surface-subtle"
+                    title={packageMeta.sha256}
+                  >
+                    <span>{packageMeta.sha256.slice(0, 24)}…</span>
+                    {copiedHash ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                  </button>
+                )}
+                {packageMeta.state === 'ready' && !packageMeta.sha256 && (
+                  <span className="font-mono text-[11px]">digest unavailable</span>
+                )}
+              </div>
+              <div className="flex items-center justify-between">
+                <span style={{ color: 'var(--text-muted)' }}>Build Channel:</span>
+                <code className="font-mono font-semibold">{APK_BUILD_TAG}</code>
               </div>
             </div>
 
